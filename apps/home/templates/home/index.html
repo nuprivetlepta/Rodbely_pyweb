@@ -77,8 +77,9 @@
 	          <li class="nav-item"><a href="{% url 'home:about' %}" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="{% url 'home:blog' %}" class="nav-link">Blog</a></li>
 	          <li class="nav-item"><a href="{% url 'home:contact' %}" class="nav-link">Contact</a></li>
-	          <li class="nav-item cta cta-colored"><a href="{% url 'home:cart' %}" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-				{% endverbatim %}
+                    {% endverbatim %}
+	          <li class="nav-item cta cta-colored"><a href="{% url 'cart_shop:cart' %}" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
 	        </ul>
 	      </div>
 	    </div>
@@ -230,20 +231,26 @@
 				{% for product in data %}
     			<div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static product.url %}" alt="Colorlib Template">
+    					<a href="#" class="img-prod"><img class="img-fluid" src={{product.image.url}} alt="Colorlib Template">
 							{% if product.discount %}
     						<span class="status">{{product.discount}}</span>
-							{% else %}
-  							<p class="price"><span>${{product.price_before}}</span></p>
-							{% endif %}}
+							{% endif %}
     						<div class="overlay"></div>
     					</a>
     					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="#">{{product.name}}}</a></h3>
+    						<h3><a href="#">{{product.name}}</a></h3>
     						<div class="d-flex">
     							<div class="pricing">
-		    						<p class="price"><span class="mr-2 price-dc"> {{product.price_before}}</span><span class="price-sale"> {{product.price_after}}</span></p>
-		    					</div>
+                               {% if product.discount %}
+                                {% widthratio product.discount 1 -1 as revers %}
+                               <p class="price"><span class="mr-2 price-dc">${{product.price}}</span>
+                                   <span class="price-sale">${% widthratio product.price 100 revers|add:100 %}</span>
+                               </p>
+                               {% else %}
+                                <p class="price"><span>${{product.price}}</span></p>
+                                {% endif %}
+                            </div>
+
 	    					</div>
 	    					<div class="bottom-area d-flex px-3">
 	    						<div class="m-auto d-flex">
