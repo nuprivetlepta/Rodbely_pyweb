@@ -21,10 +21,14 @@ class ViewCart(View):
    def get(self, request):
        cart_items = CartItemShop.objects.filter(cart__user=request.user)
        data = list(cart_items)
-       total_price_no_discount = Decimal(sum(item.product.price * item.quantity
-                                     for item in data))
-       total_discount = Decimal(sum(item.product.price * item.product.discount * item.quantity
-                            for item in data if item.product.discount is not None)/100)
+       total_price_no_discount = sum(item.product.price * item.quantity
+                                     for item in data)
+       total_discount = sum(item.product.price * item.product.discount * item.quantity
+                            for item in data if item.product.discount is not None)/100
+       if total_price_no_discount == 0:
+           total_price_no_discount = Decimal("0.00")
+       if total_discount == 0:
+           total_discount = Decimal("0.00")
        total_sum = total_price_no_discount - total_discount
        context = {'cart_items': data,
                   'total_price_no_discount': total_price_no_discount,
