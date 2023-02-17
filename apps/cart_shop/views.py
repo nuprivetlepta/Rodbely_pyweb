@@ -2,6 +2,7 @@ from .models import CartItemShop
 from django.views import View
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import CartItemShop, Cart, Product
+from decimal import Decimal
 
 def save_product_in_cart(request, product_id):
    cart_items = CartItemShop.objects.filter(cart__user=request.user,
@@ -16,15 +17,14 @@ def save_product_in_cart(request, product_id):
    cart_item.save()
 
 
-
 class ViewCart(View):
    def get(self, request):
        cart_items = CartItemShop.objects.filter(cart__user=request.user)
        data = list(cart_items)
-       total_price_no_discount = sum(item.product.price * item.quantity
-                                     for item in data)
-       total_discount = sum(item.product.price * item.product.discount * item.quantity
-                            for item in data if item.product.discount is not None)/100
+       total_price_no_discount = Decimal(sum(item.product.price * item.quantity
+                                     for item in data))
+       total_discount = Decimal(sum(item.product.price * item.product.discount * item.quantity
+                            for item in data if item.product.discount is not None)/100)
        total_sum = total_price_no_discount - total_discount
        context = {'cart_items': data,
                   'total_price_no_discount': total_price_no_discount,
