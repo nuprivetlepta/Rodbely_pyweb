@@ -3,5 +3,5 @@ from django.urls import path
 from .views import Forma
 
 urlpatterns = [
-    path('login/', Forma.as_view()),
+    path('auth_shop/', Forma.as_view()),
 ]
