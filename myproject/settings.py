@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.blog',
     'apps.checkout',
     'rest_framework',
+    'apps.wishlist'
 ]
 
 MIDDLEWARE = [
