@@ -66,7 +66,9 @@
 				  {% verbatim %}
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               	<a class="dropdown-item" href="{% url 'home:shop' %}">Shop</a>
-              	<a class="dropdown-item" href="{% url 'home:wishlist' %}">Wishlist</a>
+                  {% endverbatim %}
+              	<a class="dropdown-item" href="{% url 'wishlist:wishes' %}">Wishlist</a>
+                  {% verbatim %}
                 <a class="dropdown-item" href="{% url 'home:product-single' %}">Single Product</a>
 				  {% endverbatim %}
                 <a class="dropdown-item" href="{% url 'cart_shop:cart' %}">Cart</a>

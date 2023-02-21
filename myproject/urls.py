@@ -46,5 +46,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('cart/', include('apps.cart_shop.urls')),
     path('login/', include('apps.auth_shop.urls')),
-    path('wishlist/', include('apps.wishlist.urls'))
+    path('wishes/', include('apps.wishlist.urls'))
 ]

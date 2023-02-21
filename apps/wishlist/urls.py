@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import ViewWishlist
 
-app_name = 'cart_shop'
+app_name = 'wishlist'
 
 urlpatterns = [
-   path('', ViewWishlist.as_view(), name='wishlist'),
+   path('', ViewWishlist.as_view(), name='wishes'),
 ]
