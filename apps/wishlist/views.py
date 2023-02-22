@@ -5,9 +5,6 @@ from apps.cart.models import Cart
 
 
 class ViewWishlist(View):
-    # def get(self, request):
-    #     return render(request, 'wishlist/wishlist.html')
-
     def get(self, request):
         wishlist_items = WishListItemShop.objects.filter(wishlist__user=request.user)
         context = {'items': wishlist_items}
@@ -15,9 +12,23 @@ class ViewWishlist(View):
 
 class WishListLike(View):
     def get(self, request, product_id):
+        if request.user.is_authenticated:
+            product = get_object_or_404(Product, id=product_id)
+            cart_user = get_object_or_404(Cart, user=request.user)
+            wishlist_item = WishListItemShop(wishlist=cart_user, product=product)
+            wishlist_item.save()
+            # if not wishlist_item:
+            #     wishlist_item.save()
+            return redirect('home:index')
+        else:
+            return redirect('auth_shop:login')
+
+class WishListRemove(View):
+    def get(self, request, product_id):
         product = get_object_or_404(Product, id=product_id)
         cart_user = get_object_or_404(Cart, user=request.user)
-        wishlist_item = WishListItemShop(cart=cart_user, product=product)
-        wishlist_item.save()
-        return redirect('home:index')
+        wishlist_item = WishListItemShop(wishlist=cart_user, product=product)
+        wishlist_item.delete()
+        return redirect('wishlist:wishes')
+
 
