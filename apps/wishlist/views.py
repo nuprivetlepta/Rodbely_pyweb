@@ -16,9 +16,9 @@ class WishListLike(View):
             product = get_object_or_404(Product, id=product_id)
             cart_user = get_object_or_404(Cart, user=request.user)
             wishlist_item = WishListItemShop(wishlist=cart_user, product=product)
-            wishlist_item.save()
-            # if not wishlist_item:
-            #     wishlist_item.save()
+            # wishlist_item.save()
+            if not wishlist_item:
+                wishlist_item.save()
             return redirect('home:index')
         else:
             return redirect('auth_shop:login')
@@ -27,7 +27,8 @@ class WishListRemove(View):
     def get(self, request, product_id):
         product = get_object_or_404(Product, id=product_id)
         cart_user = get_object_or_404(Cart, user=request.user)
-        wishlist_item = WishListItemShop(wishlist=cart_user, product=product)
+        # wishlist_item = WishListItemShop(wishlist=cart_user, product=product)
+        wishlist_item = get_object_or_404(WishListItemShop, wishlist=cart_user, product=product)
         wishlist_item.delete()
         return redirect('wishlist:wishes')
 
