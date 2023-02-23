@@ -10,6 +10,7 @@ class ViewWishlist(View):
         context = {'items': wishlist_items}
         return render(request, 'wishlist/wishlist.html', context)
 
+
 class WishListLike(View):
     def get(self, request, product_id):
         if request.user.is_authenticated:
@@ -17,11 +18,16 @@ class WishListLike(View):
             cart_user = get_object_or_404(Cart, user=request.user)
             wishlist_item = WishListItemShop(wishlist=cart_user, product=product)
             # wishlist_item.save()
-            if not wishlist_item:
-                wishlist_item.save()
+            # return redirect('home:index')
+            # -------------------------
+            for item in WishListItemShop.objects.filter(wishlist__user=request.user):
+                if item.product.id == wishlist_item.product.id:
+                    return redirect('home:index')
+            wishlist_item.save()
             return redirect('home:index')
         else:
             return redirect('auth_shop:login')
+
 
 class WishListRemove(View):
     def get(self, request, product_id):
