@@ -6,9 +6,12 @@ from apps.cart.models import Cart
 
 class ViewWishlist(View):
     def get(self, request):
-        wishlist_items = WishListItemShop.objects.filter(wishlist__user=request.user)
-        context = {'items': wishlist_items}
-        return render(request, 'wishlist/wishlist.html', context)
+        if request.user.is_authenticated:
+            wishlist_items = WishListItemShop.objects.filter(wishlist__user=request.user)
+            context = {'items': wishlist_items}
+            return render(request, 'wishlist/wishlist.html', context)
+        else:
+            return redirect('auth_shop:login')
 
 
 class WishListLike(View):
